@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pitch Deck: A Winning Support Proposition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --h1-font-size-base: 15.5rem; /* Base font size for h1 */
+            --h1-font-size-desktop: 20.5rem; /* Font size for h1 on larger screens */
+        }
+        /* Base styles inspired by mind-map.tech */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F5; /* Off-white from your assets */
+            color: #1F2937; /* Dark grey for text */
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .slide {
+            width: 100%;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 5vw;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+            text-align: center;
+        }
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            z-index: 1;
+        }
+        /* Using the muted gold accent from your mindmap image */
+        .accent-color {
+            color: #bca06a;
+        }
+        .accent-bg {
+            background-color: #bca06a;
+        }
+        .icon {
+            width: 4rem; /* 64px */
+            height: 4rem; /* 64px */
+            stroke-width: 0.75; /* Thinner strokes for elegance */
+            margin-bottom: 1.5rem;
+            color: #374151;
+        }
+        .portrait {
+            max-width: 300px;
+            max-height: 300px;
+            margin-bottom: 1.5rem;
+            border-radius: 0.5rem;
+        }
+        .nav-button {
+            position: fixed;
+            z-index: 10;
+            bottom: 2.5rem;
+            background-color: rgba(31, 41, 55, 0.05);
+            color: #374151;
+            border-radius: 9999px;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: 1px solid rgba(31, 41, 55, 0.1);
+        }
+        .nav-button:hover {
+            background-color: rgba(31, 41, 55, 0.1);
+        }
+        #prev-btn { left: 2.5rem; }
+        #next-btn { right: 2.5rem; }
+        #slide-counter {
+            position: fixed;
+            z-index: 10;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(31, 41, 55, 0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            border: 1px solid rgba(31, 41, 55, 0.1);
+        }
+        h1 {
+            font-size: var(--h1-font-size-base);
+            font-weight: 500; /* Lighter weight for a more architectural feel */
+            line-height: 1.1;
+            letter-spacing: -0.025em;
+        }
+        h2 {
+            font-size: 2.25rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+        p {
+            font-size: 1.25rem;
+            font-weight: 300;
+            max-width: 800px;
+            line-height: 1.6;
+        }
+        @media (min-width: 768px) {
+            h1 { font-size: var(--h1-font-size-desktop); }
+            h2 { font-size: 2.5rem; }
+            p { font-size: 1.25rem; }
+        }
+        .grid-item {
+            background-color: transparent;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(31, 41, 55, 0.15);
+        }
+        .arrow-visual {
+            font-size: 3rem;
+            color: #9CA3AF;
+        }
+        .title-background {
+            background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAI0BwgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1VZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQACEQMRAD8A8/ooor6A+PCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigA-');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+        .topic-circle-container {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            max-width: 1000px;
+        }
+        .topic-circle {
+            position: absolute;
+            border: 1px solid rgba(31, 41, 55, 0.2);
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background-color: rgba(255,255,255,0.7);
+            backdrop-filter: blur(2px);
+        }
+    </style>
+</head>
+<body class="w-full h-screen">
+
+    <!-- SLIDE 1: Title -->
+    <section class="slide active title-background" id="slide-1">
+        <div class="bg-white/80 backdrop-blur-sm p-8 rounded-lg">
+            <h1 class="mb-6">A Winning Support Proposition</h1>
+            <div class="w-24 h-1 accent-bg mx-auto my-6"></div>
+            <p class="text-gray-700">Evolving <span class="font-medium text-black">Cambridge GO</span> into an <span class="font-medium text-black">Intelligent Learning Partner</span></p>
+        </div>
+    </section>
+
+    <!-- SLIDE 2: The User -->
+    <section class="slide" id="slide-2">
+        <img src='3.png' alt="Portrait of Markus overwhelmed with his studies" class="portrait"/>
+        <h2 class="font-medium">Meet Markus.</h2>
+        <p>He's a GCSE History student. He's <span class="font-medium accent-color">overwhelmed</span>, <span class="font-medium accent-color">anxious</span> and struggling to <span class="font-medium accent-color">focus</span>.</p>
+    </section>
+
+    <!-- SLIDE 3: The Challenge -->
+    <section class="slide" id="slide-3">
+        <h2 class="font-medium">A two-year marathon...</h2>
+        <p class="mb-4">For his History GCSE alone, Markus has to master a vast and complex curriculum.</p>
+        <div class="topic-circle-container">
+             <div class="topic-circle" style="width: 220px; height: 220px; top: 10%; left: 35%;"><p class="text-lg font-medium">Medicine in Britain, c.1250–present</p></div>
+             <div class="topic-circle" style="width: 180px; height: 180px; top: 50%; left: 10%;"><p class="text-lg font-medium">The Norman Conquest</p></div>
+             <div class="topic-circle" style="width: 200px; height: 200px; top: 60%; left: 65%;"><p class="text-lg font-medium">The Making of America</p></div>
+             <div class="topic-circle" style="width: 190px; height: 190px; top: 5%; left: 5%;"><p class="text-lg font-medium">The Cold War, 1945–1975</p></div>
+             <div class="topic-circle" style="width: 160px; height: 160px; top: 20%; left: 60%;"><p class="text-lg font-medium">Elizabethan England</p></div>
+<div class="topic-circle" style="width: 160px; height: 160px; top: 20%; left: 85%;">
+    <p class="text-lg font-medium" style="color: red;">And many-many more...</p>
+</div>
+             <div class="topic-circle" style="width: 170px; height: 170px; top: 70%; left: 30%;"><p class="text-lg font-medium">Germany 1890-1945</p></div>
+        </div>
+    </section>
+
+    <!-- SLIDE 4: The Systemic Problem -->
+    <section class="slide" id="slide-4">
+        <h2 class="font-medium">Universal pain points</h2>
+        <p class="mb-12">The reformed linear exams create four key challenges for every teacher and student.</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 w-full max-w-5xl">
+            <div class="flex flex-col items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 6.75l6 6 9-13.5" /></svg>
+                <p class="font-medium text-lg">Technique</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <!-- MODIFIED ICON for Forgetting -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.572a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+                </svg>
+                <p class="font-medium text-lg">Forgetting</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <!-- MODIFIED ICON for Overload -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <!-- A tower of blocks, slightly offset to show instability -->
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10v-2H7v2z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 18h10v-2h-10v2z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.5 15h10v-2h-10v2z" />
+                    <!-- A top block falling off -->
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h10v-2H8v2z" transform="rotate(15 13 11)" />
+                </svg>
+                <p class="font-medium text-lg">Overload</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                <p class="font-medium text-lg">Differentiation</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 5: The Vision -->
+    <section class="slide" id="slide-5">
+        <h2 class="font-medium">The strategic shift</h2>
+        <div class="flex items-center justify-center gap-8 md:gap-16 w-full max-w-4xl">
+            <div class="flex flex-col items-center">
+<svg xmlns="http://www.w3.org/2000/svg" class="icon text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                
+                <p class="font-medium text-lg text-gray-400">Content repository</p>
+            </div>
+             <div class="arrow-visual">&rarr;</div>
+            <div class="flex flex-col items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon accent-color" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <!-- Brain side -->
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5C9.34 4.5 7 6.43 7 9c0 1.72.93 3.2 2.33 4.05.78.47 1.17 1.39 1.17 2.3V19.5" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 9c-1.5 0-2.5-1-2.5-2.5S5.5 4 7 4" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.33 13.05a5.5 5.5 0 00-1-1.5" />
+                
+                    <!-- Circuit side -->
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5V19.5" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6h7m-5 4h5m-7 4h7m-4 4h4" />
+                
+                    <!-- Circuit nodes -->
+                    <circle cx="20" cy="6" r="1" fill="currentColor" stroke-width="0" />
+                    <circle cx="18" cy="10" r="1" fill="currentColor" stroke-width="0" />
+                    <circle cx="20" cy="14" r="1" fill="currentColor" stroke-width="0" />
+                    <circle cx="17" cy="18" r="1" fill="currentColor" stroke-width="0" />
+                </svg>
+                <p class="font-medium text-lg accent-color">Intelligent Learning OS</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 6: The Solution -->
+    <section class="slide" id="slide-6">
+        <h2 class="font-medium">Intelligent content for learning</h2>
+        <p class="mb-12">A suite of AI-powered tools integrated into Cambridge GO to solve the universal problems.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+            <div class="grid-item text-left"><p class="text-xl font-semibold mb-2 accent-color">GO Planner & Path</p><p class="text-base text-gray-600">Solves overload</p></div>
+            <div class="grid-item text-left"><p class="text-xl font-semibold mb-2 accent-color">AI Assistant</p><p class="text-base text-gray-600">Solves differentiation</p></div>
+            <div class="grid-item text-left"><p class="text-xl font-semibold mb-2 accent-color">GO Exam Simulator</p><p class="text-base text-gray-600">Solves exam technique</p></div>
+            <div class="grid-item text-left"><p class="text-xl font-semibold mb-2 accent-color">GO Revision Engine</p><p class="text-base text-gray-600">Solves forgetting</p></div>
+        </div>
+    </section>
+
+
+    <!-- SLIDE 7: The Innovation Layer -->
+    <section class="slide" id="slide-8">
+        <img src='2.png' alt="Portrait of Markus as an engaged detective" class="portrait"/>
+        <h2 class="font-medium">The Engagement Engine</h2>
+        <p>A narrative-driven game where students apply knowledge from History, Science, English and other GCSE subjects to solve a compelling mystery.</p>
+    </section>
+    
+    <!-- SLIDE 8: The Resolution -->
+    <section class="slide" id="slide-9">
+        <img src='1.png' alt="Portrait of Markus as a happy, successful student" class="portrait"/>
+        <h2 class="font-medium">The new reality</h2>
+         <p>Markus is no longer overwhelmed. He is <span class="font-medium accent-color">clear</span>, <span class="font-medium accent-color">confident</span> and <span class="font-medium accent-color">engaged</span>.</p>
+    </section>
+
+    <!-- SLIDE 9: The Call to Action -->
+    <section class="slide" id="slide-10">
+        <h2 class="font-medium">This isn't sci-fi.</h2>
+        <p class="mb-12">The tech is already here. The rest is a matter of...</p>
+        <div class="flex flex-col md:flex-row gap-8 items-center justify-center w-full max-w-6xl">
+            <div class="flex flex-col items-center flex-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                <p class="font-medium text-xl">Pragmatic content architecture</p>
+            </div>
+            <div class="flex flex-col items-center flex-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                <p class="font-medium text-xl">Strategic product management</p>
+            </div>
+            <div class="flex flex-col items-center flex-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3L13.5 8.5L19 10L13.5 11.5L12 17L10.5 11.5L5 10L10.5 8.5L12 3Z"/>
+                    <path d="M5 3L6 5L7 3L6 5L8 4L6 5L8 6L6 5L7 7L6 5L5 7L6 5L4 6L6 5L4 4L6 5Z"/>
+                    <path d="M19 17L18 19L17 17L18 19L16 18L18 19L16 20L18 19L17 21L18 19L19 21L18 19L20 20L18 19L20 18L18 19Z"/>
+                </svg>
+                <p class="font-medium text-xl">A bit of creative flair</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 11: Thank you -->
+    <section class="slide" id="slide-11">
+        <h1 class="mb-4">Thank you.</h1>
+        <div class="w-24 h-1 accent-bg mx-auto my-6"></div>
+        <p class="text-gray-700">Alina Strelkovskaia</p>
+    </section>
+    
+    <!-- SLIDE 12: Blank (for Q&A) -->
+    <section class="slide" id="slide-12"></section>
+
+    <!-- Navigation -->
+    <div id="prev-btn" class="nav-button">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+    </div>
+    <div id="next-btn" class="nav-button">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+    </div>
+    <div id="slide-counter">1 / 12</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const slideCounter = document.getElementById('slide-counter');
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.remove('active');
+                });
+                slides[index].classList.add('active');
+                slideCounter.textContent = `${index + 1} / ${totalSlides}`;
+            }
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                showSlide(currentSlide);
+            }
+
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                showSlide(currentSlide);
+            }
+
+            nextBtn.addEventListener('click', nextSlide);
+            prevBtn.addEventListener('click', prevSlide);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    e.preventDefault();
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    prevSlide();
+                }
+            });
+
+            showSlide(currentSlide);
+        });
+    </script>
+</body>
+</html>
